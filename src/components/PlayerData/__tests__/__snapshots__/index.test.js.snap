@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PlayerData component matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="card col-4"
+  >
+    <div
+      class="card-body"
+    >
+      <h3
+        class="card-title"
+      >
+        Cabral Williams
+      </h3>
+      <h4>
+        Player Statistics
+      </h4>
+      <ul>
+        <li>
+          Victories: 27
+        </li>
+        <li>
+          Run: Jan 05 2022 - Feb 18 2022
+        </li>
+        <li>
+          Winnings: $622,800
+        </li>
+        <li>
+          Notes: This is fake data.
+        </li>
+      </ul>
+    </div>
+  </div>
+</DocumentFragment>
+`;

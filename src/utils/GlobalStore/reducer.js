@@ -1,4 +1,4 @@
-import { SELECT_PLAYERS, SELECT_QUESTION, INITIALIZE_GAME, SET_CLOCK_TIME } from "./actions";
+import { SELECT_PLAYERS, SELECT_QUESTION, INITIALIZE_GAME, SET_CLOCK_TIME, STORE_ANSWERS, SUBMIT_ANSWERS } from "./actions";
 
 const reducer = (state, action) => {
     switch(action.type) {
@@ -22,9 +22,14 @@ const reducer = (state, action) => {
                 gamePlayers: action.gamePlayers
             }
         case SET_CLOCK_TIME:
-            return{
+            return {
                 ...state,
                 clockTime: action.clockTime
+            }
+        case STORE_ANSWERS:
+            return {
+                ...state,
+                storedAnswers: action.storedAnswers
             }
         default:
             return state;

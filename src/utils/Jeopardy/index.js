@@ -1,3 +1,5 @@
+import { formatDate, formatDollars } from "../Format";
+
 export class ComputerPlayer {
     constructor(name, startingScore, wager, doublePlayerScores = false, correctProbability = 0.5) {
         this.name = name;
@@ -34,6 +36,48 @@ export class RealPlayer extends ComputerPlayer {
         this.response = response;
         this.wasCorrect = wasCorrect;
         this.correctProbability = this.wasCorrect ? 1 : 0;
+    }
+}
+
+export class PlayerStats {
+    constructor(name, firstGame, lastGame, victories, winnings, notes, strategies) {
+        //stratgies = { soloLead, tiedForLead, secondPlace, tiedForSecondPlace, thirdPlace }
+        this.name = name;
+        this.firstGame = firstGame;
+        this.lastGame = lastGame;
+        this.victories = victories;
+        this.winningsRaw = winnings;
+        this.notes = notes;
+        this.winnings = formatDollars(this.winningsRaw);
+        this.runDates = `${formatDate(new Date(this.firstGame))} - ${formatDate(new Date(this.lastGame))}`;
+        this.strategies = strategies;
+        this.startingScore = 0;
+    }
+
+    setStartingScore(inputAmount = 10000) {
+        this.startingScore = inputAmount;
+    }
+
+    determineWager(opponentTotals) {
+        //leadingTiedStrategy: options = aggressive, winBy1, tie, lose
+        const isLeading = this.startingScore > opponentTotals[0] && this.startingScore > opponentTotals[1];
+        let isSecond = false;
+        let isLast = false;
+        let isTiedForFirst = false;
+        let isTiedForSecond = false;
+        //Determine exact position for wager strategy and amount
+        if(!isLeading) {
+            isTiedForFirst = this.startingScore === opponentTotals[0] || this.startingScore === opponentTotals[1];
+            if(!isTiedForFirst) {
+                isSecond = (this.startingScore < opponentTotals[0] && this.startingScore > opponentTotals[1]) || (this.startingScore > opponentTotals[0] && this.startingScore < opponentTotals[1]);
+                if(!isSecond) {
+                    isTiedForFirst = this.startingScore === opponentTotals[0] || this.startingScore === opponentTotals[1];
+                    if(!isTiedForSecond) {
+                        isLast = true;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -244,4 +288,40 @@ export function generatePlayerScores(player1, player2, player3) {
         nextPlayer = poseQuestion(player1,player2,player3, nextPlayer, 2, r2Qs);
     }
     return { player1, player2, player3 };
+}
+
+export function soloLeadBy1(playerScore, opponentScores, isRunaway = false) {
+    if(!isRunaway) {
+        const opponentDouble = 2*Math.max(...opponentScores);
+        return opponentDouble - playerScore + 1;
+    }
+    return playerScore - 2*Math.max(...opponentScores) - 1;
+}
+
+export function soloLeadTie(playerScore, opponentScores, isRunaway = false) {
+    if(!isRunaway) {
+        const opponentDouble = 2*Math.max(...opponentScores);
+        return opponentDouble - playerScore;
+    }
+    return playerScore - 2*Math.max(...opponentScores);
+}
+
+export function soloLeadCautious(playerScore, opponentScores, isRunaway = false) {
+    if(!isRunaway) {
+        //This strategy could lead to the leading player losing even if getting Final Jeopardy correct
+        const opponentDouble = 2*Math.max(...opponentScores);
+        return Math.floor((opponentDouble - playerScore)*(0.5*Math.random()/2)/100)*100;
+    }
+    return Math.floor((playerScore - 2*Math.max(...opponentScores))*(0.5*Math.random()/2)/100)*100;
+}
+
+export function soloLeadAggressive(playerScore, opponentScores, isRunaway = false) {
+    if(!isRunaway) {
+        const opponentDouble = 2*Math.max(...opponentScores);
+        const difference = opponentDouble - playerScore; //Bare minimum to guarantee tie
+        const buffer = playerScore - difference;
+        return Math.floor((difference + buffer*Math.random())/100)*100;
+    }
+    const floor = playerScore - 2*Math.max(...opponentScores);
+    return Math.floor((Math.floor((playerScore - floor)/100)*100 + floor)/100)*100;
 }

@@ -9,6 +9,9 @@ export const AMY_SCHNEIDER_FIRST_RUN = new ComputerPlayer("Amy Schneider", 30100
 export const JULIA_COLLINS_FIRST_RUN = new ComputerPlayer("Julia Collins", 19500,5000,false,0.62);
 export const JASON_ZUFFRANIERI_FIRST_RUN = new ComputerPlayer("Jason Zuffranieri",27200,5600,false,0.55);
 export const DAVID_MADDEN_FIRST_RUN = new ComputerPlayer("David Madden", 20200,3500,false,0.7);
+export const ROGER_CRAIG_FIRST_RUN = new ComputerPlayer("Roger Craig", 29800,9500,false,0.57);
+export const LARISSA_KELLY_FIRST_RUN = new ComputerPlayer("Larissa Kelly", 21100,10900,false,1);
+export const MATT_JACKSON_FIRST_RUN = new ComputerPlayer("Matt Jackson", 30500,6300,false,0.57);
 
 //May 16, 2014
 export const BRAD_RUTTER_MAY_16_2014 = new RealPlayer("Brad Rutter", 11800,0,false,1,["James Buchanan","Condoleeza Rice"],true);

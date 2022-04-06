@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Header from './components/Header';
 import Acknowledgements from './pages/Acknowledgements';
+import PlayerView from './components/PlayerView';
 
 function App() {
     return (
@@ -16,6 +17,7 @@ function App() {
                     <main>
                         <Routes>
                             <Route path="/" element={<HomePage />} />
+                            <Route path='/temporary_play' element={<PlayerView />} />
                             <Route path='/acknowledgements' element={<Acknowledgements />} />
                         </Routes>
                     </main>
